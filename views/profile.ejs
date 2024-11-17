@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Habit Garden</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+  <div class="container">
+
+    <div class="page-header text-center">
+      <h1><span class="fa-solid fa-seedling"></span> Profile</h1>
+      <a href="/logout" class="rounded-md bg-[#8FAE24] hover:bg-[#637328] font-semibold px-3 py-1.5 mx-2 text-white">Logout</a>
+    </div>
+    <div>
+      <!-- LOCAL INFORMATION -->
+      <div>
+        <div>
+          <h3>
+            <span class="fa fa-user"></span> 
+            Account Information
+          </h3>
+          <% if (user.local.username) { %>
+            <p class="mb-5">
+              <strong>id</strong>: <%= user._id %><br>
+              <strong>username</strong>: <%= user.local.username %><br>
+                <strong>password</strong>: <%= user.local.password %>
+            </p>
+
+            <a href="/unlink/local" 
+              class="rounded-md font-semibold px-4 py-2 mx-2 text-red-700 border-2 border-red-700 hover:bg-red-700 hover:text-white">
+              Delete Account
+            </a>
+            <% } else { %>
+              <a href="/connect/local" class="btn btn-default">Connect Local</a>
+              <% } %>
+        </div>
+      </div>
+      <!-- HABIT TRACKER -->
+      <div class="text-center">
+        <h2 class="uppercase text-[#478978] text-xl font-bold">Your Habits</h3>
+        <ul class="habits">
+          <% habits.forEach(habit => { %> 
+            <li class="habit flex justify-center py-3 ">
+              <span class="capitalize text-[#478978] font-semibold"><%= habit.habit %></span>
+              <div class="habit-days px-4">
+                <% for (const day in habit.days) { %>
+                  <label>
+                    <input
+                    type="checkbox"
+                    class="day-checkbox"
+                    data-habit="<%= habit.habit %>"
+                    data-day="<%= day %>"
+                    <%= habit.days[day] ? "checked" : " " %>>
+                    <%= day %>
+                  </label>
+                <% } %>
+              </div>
+              <span>
+                <i class="fa-solid fa-trash-can delete-btn cursor-pointer" data-habit="<%= habit.habit %>" aria-hidden="true"></i>
+              </span>
+            </li>
+          <% }) %>
+        </ul>
+        <!-- ADD HABIT -->
+        
+          <form action="/habits" method="POST" class="mt-7">
+            <input class=" border-2 border-solid border-[#333333]" type="text" placeholder="New Habit" name="habit" required>
+            <button 
+              type="submit" 
+              class="rounded-md bg-[#8FAE24] hover:bg-[#637328] px-3 py-1.5 mx-2 text-white">
+              Add Habit
+          </button>
+          </form>
+      </div>
+
+    </div>
+
+    <script src="main.js"></script>
+<script src="https://kit.fontawesome.com/aabdb7c1a3.js" crossorigin="anonymous"></script>
+</body>
+
+</html>
