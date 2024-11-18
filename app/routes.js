@@ -9,7 +9,7 @@ module.exports = function(app, passport, db) {
 
     // PROFILE SECTION =========================
     app.get('/profile', isLoggedIn, function(req, res) {
-        db.collection('habits').find().toArray((err, result) => {
+        db.collection('habits').find({user : req.user}).toArray((err, result) => {
           if (err) return console.log(err)
           res.render('profile.ejs', {
             user : req.user,
@@ -31,6 +31,7 @@ module.exports = function(app, passport, db) {
     app.post('/habits', (req, res) => {
       db.collection('habits').insertOne(
         {
+          user: req.user,
           habit: req.body.habit,
           days: {
             Monday: false,
